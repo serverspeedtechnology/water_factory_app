@@ -34,7 +34,7 @@ def load_data():
     )
 
 
-st.title("💧 Water Factory Production & Capital Tracker")
+st.title("💧 Aquafy lite")
 ledger_df = load_data()
 
 # Fetch previous day closing stock and capital
