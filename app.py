@@ -45,7 +45,19 @@ with st.form("daily_entry"):
   loan_payment = st.number_input("Loan Payment (₦)", value=12000.0)
 
   submit = st.form_submit_button("Submit Entry")
+if submit:
+  # Prevent duplicate submissions using a unique click tracker
+  submission_key = f"{entry_date}_{bags_sold}_{var_costs}"
+  if st.session_state.get("last_submission") == submission_key:
+    st.warning(
+        "This entry has already been submitted! Change your inputs or refresh"
+        " to add a new one."
+    )
+    st.stop()
 
+  st.session_state["last_submission"] = submission_key
+
+  # ... (rest of your calculations and requests.post code)
 if submit:
   total_revenue = bags_sold * selling_price
   gross_margin = total_revenue - var_costs
