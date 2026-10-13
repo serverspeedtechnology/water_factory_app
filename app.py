@@ -130,7 +130,7 @@ if submit:
   )
 
   # --- POST TO GOOGLE APPS SCRIPT WEB APP ---
-  WEB_APP_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL"
+  WEB_APP_URL = "https://script.google.com/macros/s/AKfycbweVgthY2HblY8uOaxmMxI8tpNoA_t2lXvS4YjsU-z4lu9qiD5gyYX6uPvHZHZ1BNDXpQ/exec"
 
   payload = {
       "Date": str(entry_date),
