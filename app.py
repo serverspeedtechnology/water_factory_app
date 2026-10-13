@@ -58,22 +58,9 @@ if submit:
   new_loan = max(0.0, prev_loan + interest_today - loan_payment)
   new_cap = prev_cap + (gross_margin - upkeep_drawn - 333.33 - loan_payment)
 
-  # Create new row
-  new_row = pd.DataFrame([{
-      "Date": str(entry_date),
-      "Bags_Sold": bags_sold,
-      "Revenue": total_revenue,
-      "Var_Costs": var_costs,
-      "Gross_Margin": gross_margin,
-      "Upkeep_Drawn": upkeep_drawn,
-      "Loan_Payment": loan_payment,
-      "Interest_Accrued": interest_today,
-      "Loan_Balance": new_loan,
-      "Working_Capital": new_cap,
-  }])
-import requests
+  # Send directly to Google Apps Script Web App
+  import requests
 
-  # Paste your deployed Google Apps Script Web App URL here
   WEB_APP_URL = "https://script.google.com/macros/s/AKfycbweVgthY2HblY8uOaxmMxI8tpNoA_t2lXvS4YjsU-z4lu9qiD5gyYX6uPvHZHZ1BNDXpQ/exec"
 
   payload = {
@@ -90,8 +77,11 @@ import requests
   }
 
   response = requests.post(WEB_APP_URL, json=payload)
-  st.success("Successfully saved to Google Sheets!")
-  st.rerun()
+  if response.status_code == 200:
+    st.success("Successfully saved to Google Sheets!")
+    st.rerun()
+  else:
+    st.error("Failed to save entry.")
 
 # --- DISPLAY DATA ---
 st.subheader("📜 Recent Records")
