@@ -71,11 +71,25 @@ if submit:
       "Loan_Balance": new_loan,
       "Working_Capital": new_cap,
   }])
+import requests
 
-  # Append new row and update Google Sheet
-  updated_df = pd.concat([ledger_df, new_row], ignore_index=True)
-  conn.update(worksheet="Ledger", data=updated_df)
+  # Paste your deployed Google Apps Script Web App URL here
+  WEB_APP_URL = "https://script.google.com/macros/s/AKfycbweVgthY2HblY8uOaxmMxI8tpNoA_t2lXvS4YjsU-z4lu9qiD5gyYX6uPvHZHZ1BNDXpQ/exec"
 
+  payload = {
+      "Date": str(entry_date),
+      "Bags_Sold": bags_sold,
+      "Revenue": total_revenue,
+      "Var_Costs": var_costs,
+      "Gross_Margin": gross_margin,
+      "Upkeep_Drawn": upkeep_drawn,
+      "Loan_Payment": loan_payment,
+      "Interest_Accrued": interest_today,
+      "Loan_Balance": new_loan,
+      "Working_Capital": new_cap,
+  }
+
+  response = requests.post(WEB_APP_URL, json=payload)
   st.success("Successfully saved to Google Sheets!")
   st.rerun()
 
