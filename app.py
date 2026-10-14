@@ -11,7 +11,12 @@ conn = st.connection("gsheets", type=GSheetsConnection)
 def load_data():
   try:
     df = conn.read(worksheet="Ledger", ttl="0s")
+    # Clean up column names in case of accidental spaces
+    df.columns = df.columns.str.strip()
+    # Drop completely empty rows or rows where Date is missing
     df = df.dropna(subset=["Date"])
+    # Ensure Date is string and filter out any accidental empty strings
+    df = df[df["Date"].astype(str).str.strip() != ""]
     return df
   except Exception:
     return pd.DataFrame(
@@ -31,7 +36,6 @@ def load_data():
             "Growth_Rate_Pct",
         ]
     )
-
 
 st.title("💧 Agua Mundial Water Factory Management App")
 ledger_df = load_data()
